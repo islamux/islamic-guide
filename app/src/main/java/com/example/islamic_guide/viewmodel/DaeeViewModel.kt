@@ -25,6 +25,7 @@ class DaeeViewModel : ViewModel() {
         return _daeeList.value.find { it.id == id }
     }
 
+
     // Mock data for initial setup
     private fun mockData(): List<Daee> {
         return listOf(
