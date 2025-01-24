@@ -1,9 +1,12 @@
+package com.example.islamic_guide.viewmodel
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.example.islamic_guide.model.Daee
 
 class DaeeViewModel : ViewModel() {
     // In-memory data store
@@ -25,7 +28,6 @@ class DaeeViewModel : ViewModel() {
         return _daeeList.value.find { it.id == id }
     }
 
-
     // Mock data for initial setup
     private fun mockData(): List<Daee> {
         return listOf(
@@ -33,13 +35,15 @@ class DaeeViewModel : ViewModel() {
                 id = 1,
                 name = "أحمد ديدات",
                 description = "داعية إسلامي متخصص في مقارنة الأديان، مؤسس IPCI.",
-                youtubeLink = "https://youtube.com/ahmaddeedat"
+                //youtubeLink = "https://youtube.com/ahmaddeedat"
+                youtubeLink = "https://www.youtube.com/@Deedat10"
             ),
             Daee(
                 id = 2,
                 name = "ذاكر نايك",
                 description = "داعية هندي، متخصص في مقارنة الأديان والإعجاز العلمي.",
-                youtubeLink = "https://youtube.com/zakirnaik"
+                //youtubeLink = "https://youtube.com/zakirnaik"
+                youtubeLink = "https://www.youtube.com/@Drzakirchannel"
             ),
             Daee(
                 id = 3,

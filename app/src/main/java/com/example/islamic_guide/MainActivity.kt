@@ -21,17 +21,26 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import AppNavHost
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.islamic_guide.navigation.AppNavHost
+import com.example.islamic_guide.viewmodel.DaeeViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApp {  
-                val navController = rememberNavController()
-                AppNavHost(navController = navController)
+            MaterialTheme {
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    val viewModel: DaeeViewModel = viewModel()
+                    val navController = rememberNavController()
+                    
+                    AppNavHost(
+                        navController = navController,
+                        viewModel = viewModel
+                    )
+                }
             }
-                   }
+        }
     }
 }
 

@@ -35,50 +35,117 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.islamic_guide.viewmodel.DaeeViewModel
 
 @Composable
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
-fun DetailsScreen(daee: Daee) {
-    var showWebView by remember { mutableStateOf(false) } // State to control WebView visibility
+fun DetailsScreen(daeeId: Int) {
+    val viewModel: DaeeViewModel = viewModel()
+    val daee = viewModel.getDaeeById(daeeId)
+    val context = LocalContext.current
 
-    Scaffold(
-        topBar = { DetailsTopAppBar(daee.name) }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(16.dp)
-        ) {
-            DaeeName(daee.name)
-            Spacer(modifier = Modifier.height(8.dp))
-
-            DaeeDescription(daee.description)
-            Spacer(modifier = Modifier.height(16.dp))
-
-            YouTubeLinkSection(daee)
-
-            // Show WebView in a Dialog
-            if (showWebView) {
-                AlertDialog(
-                    onDismissRequest = { showWebView = false },
-                    title = { Text("YouTube") },
-                    text = {
-                        YouTubeWebView(
-                            url = if (daee.name == "أحمد ديدات") {
-                                "https://www.youtube.com/@Deedat10/videos"
-                            } else {
-                                daee.youtubeLink ?: ""
-                            }
-                        )
+    daee?.let {
+        Scaffold(
+            topBar = { DetailsTopAppBar(it.name) }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Profile Section
+                Box(
+                    modifier = Modifier
+                        .padding(vertical = 16.dp)
+                ) {
+                    Text(
+                        text = it.name,
+                        style = MaterialTheme.typography.headlineMedium,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Description Card
+                androidx.compose.material3.Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    elevation = androidx.compose.material3.CardDefaults.cardElevation(
+                        defaultElevation = 4.dp
+                    )
+                ) {
+                    Text(
+                        text = it.description,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(16.dp),
+                        textAlign = TextAlign.Justify
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                // YouTube Button
+                Button(
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.youtubeLink))
+                        context.startActivity(intent)
                     },
-                    confirmButton = {
-                        Button(onClick = { showWebView = false }) {
-                            Text("Close")
-                        }
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .height(48.dp),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = "Play",
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(
+                            "Watch on YouTube",
+                            style = MaterialTheme.typography.labelLarge
+                        )
                     }
-                )
+                }
             }
         }
+    } ?: run {
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                "Daee not found",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
     }
+}
+
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+@Composable
+private fun DetailsTopAppBar(title: String) {
+    TopAppBar(
+        title = { 
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    )
 }
 
