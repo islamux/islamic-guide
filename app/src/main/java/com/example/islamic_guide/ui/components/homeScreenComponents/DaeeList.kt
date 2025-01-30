@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.Color
+import com.example.islamic_guide.model.Daee
 
 @Composable
  fun DaeeList(innerPadding: PaddingValues, daeeList: List<Daee>, navController: NavHostController) {

@@ -2,6 +2,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import com.example.islamic_guide.model.Daee
+
  fun openYouTubeLink(context: Context, daee: Daee) {
     val url = if (daee.name == "أحمد ديدات") {
         "https://www.youtube.com/@Deedat10/videos"
